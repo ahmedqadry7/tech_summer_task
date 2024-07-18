@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:route_tech_task/products/products_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'data/DI/injection.dart';
+import 'presentation/bloc/cubit.dart';
+import 'presentation/pages/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  configureDependencies();
+  runApp(MultiBlocProvider(providers: [
+    BlocProvider(create: (_) => getIt<ProductCubit>()..fetchProducts()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -10,9 +16,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ProductsScreen(),
+      home: HomeScreen(),
     );
   }
 }
